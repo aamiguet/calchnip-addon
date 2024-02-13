@@ -1,0 +1,8 @@
+## Interface: 11501
+## Version: 0.0.1
+## Title: CalChnip
+## Notes: Auto-updates guild motd
+## Author: Draaus
+## SavedVariables: CalChnipDB
+
+CalChnip.lua
