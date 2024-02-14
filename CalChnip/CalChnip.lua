@@ -143,7 +143,7 @@ local function computeMotd()
   local month, day, flavour = currentRepublicanDate(date.month, date.monthDay)
   -- hardcoded year for now
   local year = "232"
-  return string.format("Bonjour, nous sommes le %s %s %s, jour du %s.", day, month, year, flavour)
+  return string.format("Bonjour, nous sommes le %s %s %s, jour %s.", day, month, year, flavour)
 end
 
 local function checkMotd()
