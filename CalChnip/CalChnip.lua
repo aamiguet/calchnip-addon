@@ -198,6 +198,14 @@ local calMap = {
   -- and so on
 }
 
+local function cutePrint(s)
+  print(string.format("\124cff008080%s\124r", s))
+end
+
+local function isEmpty(s)
+  return s == nil or s == ''
+end
+
 local function currentRepublicanDate(month, day)
   local d = calMap[month][day]
   return d.month, d.day, d.flavour
@@ -215,7 +223,7 @@ local function checkMotd()
   if not CalChnipDB.enabled then return end
   local currentMotd = GetGuildRosterMOTD()
   local computedMotd = computeMotd()
-  if currentMotd ~= computedMotd then
+  if isEmpty(currentMotd) or currentMotd ~= computedMotd then
     if CanEditMOTD() then GuildSetMOTD(computedMotd) end
   end
   local date = C_DateAndTime.GetCurrentCalendarTime()
@@ -225,32 +233,35 @@ local function checkMotd()
   C_Timer.After(secondsToNextDay, checkMotd)
 end
 
-local function onEvent(self, event, addOnName)
-  if addOnName == "CalChnip" then
+local function onEnteringWorldEvent(self, event, isLogin, isReload)
+  if isLogin then
     CalChnipDB = CalChnipDB or {}
     if CalChnipDB.enabled == nil then
       CalChnipDB.enabled = true
     end
     if CalChnipDB.enabled then
-      print("CalChnip is enabled")
+      cutePrint("CalChnip is enabled")
     end
     checkMotd()
   end
 end
 
 local f = CreateFrame("Frame")
-f:RegisterEvent("ADDON_LOADED")
-f:SetScript("OnEvent", onEvent)
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", onEnteringWorldEvent)
 
 SLASH_CALCHNIP1 = "/calchnip"
 
 SlashCmdList.CALCHNIP = function(arg)
   if (arg == "on" and not CalChnipDB.enabled) then
     CalChnipDB.enabled = true
-    print("CalChnip enabled!")
+    cutePrint("CalChnip enabled!")
     checkMotd()
   elseif (arg == "off" and CalChnipDB.enabled) then
     CalChnipDB.enabled = false
-    print("You disabled CalChnip :(")
+    cutePrint("You disabled CalChnip :(")
+  elseif (arg == "check" and CalChnipDB.enabled) then
+    cutePrint("Checking motd")
+    checkMotd()
   end
 end
