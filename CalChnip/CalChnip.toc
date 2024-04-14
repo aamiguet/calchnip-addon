@@ -1,5 +1,5 @@
 ## Interface: 11502
-## Version: 1.0.0
+## Version: 1.0.1
 ## Title: CalChnip
 ## Notes: Auto-updates guild motd
 ## Author: Draaus

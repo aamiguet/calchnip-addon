@@ -35,7 +35,7 @@ local function dayAndYearOfRepublicanYear(d)
   end
 end
 
-local function computeMotdNew(date)
+local function computeMotd(date)
   local day, year = dayAndYearOfRepublicanYear(date)
   local dayData = ns.calMap[day]
   if day <= 360 then
@@ -47,14 +47,14 @@ end
 
 local function checkMotd()
   if not CalChnipDB.enabled then return end
-  local date = C_DateAndTime.GetCurrentCalendarTime()
+  local date = date("*t")
   local currentMotd = GetGuildRosterMOTD()
-  local computedMotd = computeMotdNew(date)
+  local computedMotd = computeMotd(date)
   if isEmpty(currentMotd) or currentMotd ~= computedMotd then
     if CanEditMOTD() then GuildSetMOTD(computedMotd) end
   end
   local secondsToNextDay =
-    86400 - date.hour * 3600 - date.minute * 60 + 60
+    86400 - date.hour * 3600 - date.min * 60 - date.sec + 1
   -- should check again right after midnight
   C_Timer.After(secondsToNextDay, checkMotd)
 end
@@ -94,6 +94,6 @@ SlashCmdList.CALCHNIP = function(arg)
     local m = tonumber(arg:sub(11, 12))
     local d = tonumber(arg:sub(14, 15))
     local ref = date("*t", time({year=y, month=m, day=d}))
-    cutePrint(computeMotdNew(ref))
+    cutePrint(computeMotd(ref))
   end
 end
