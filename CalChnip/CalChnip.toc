@@ -1,4 +1,4 @@
-## Interface: 11502
+## Interface: 11503
 ## Version: 1.0.1
 ## Title: CalChnip
 ## Notes: Auto-updates guild motd
